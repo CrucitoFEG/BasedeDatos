@@ -4,6 +4,13 @@ Service Name: FREEPDB1
 Username: PDBADMIN
 Password: abc123
 
+es para levantar la imagen de docker;
+docker start oracle-free
+docker ps
+
+
+Esto es en el caso que no levante
+
 docker ps -a
 docker rm oracle-free
 docker run -d \
