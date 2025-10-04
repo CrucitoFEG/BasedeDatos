@@ -23,3 +23,7 @@ docker ps
 
 para entrar a la base de datos
 docker exec -it oracle-free sqlplus SYSTEM/abc123@localhost:1521/FREEPDB1
+
+docker exec -it oracle-free bash
+sqlplus / as sysdba
+

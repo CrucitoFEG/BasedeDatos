@@ -1,0 +1,168 @@
+Table pais {
+  codigo_pais int [pk, increment]
+  nombre varchar(100)
+  moneda varchar(20)
+}
+
+Table tipo {
+  codigo_tipo int [pk, increment]
+  descripcion1 varchar(100)
+  descripcion2 varchar(100)
+  campo varchar(50)
+}
+
+Table empresa {
+  codigo_empresa int [pk, increment]
+  codigo_pais int [ref: > pais.codigo_pais]
+  nombre varchar(150)
+  identificador_fiscal varchar(50)
+  tipo_empresa int [ref: > tipo.codigo_tipo]
+}
+
+Table localidad {
+  codigo_localidad int [pk, increment]
+  codigo_empresa int [ref: > empresa.codigo_empresa]
+  nombre varchar(150)
+  tipo_localidad int [ref: > tipo.codigo_tipo]
+  direccion varchar(200)
+}
+
+Table terceros {
+  codigo_tercero int [pk, increment]
+  codigo_pais int [ref: > pais.codigo_pais]
+  nombre varchar(150)
+  tipo_tercero int [ref: > tipo.codigo_tipo]
+  telefono varchar(30)
+  direccion varchar(200)
+  cuenta_bancaria varchar(50)
+  codigo_cliente_aprobador int [ref: - terceros.codigo_tercero]
+}
+
+Table empleado {
+  codigo_empleado int [pk, increment]
+  codigo_empresa int [ref: > empresa.codigo_empresa]
+  codigo_localidad int [ref: > localidad.codigo_localidad]
+  nombre varchar(100)
+  puesto varchar(50)
+  salario_base decimal(12,2)
+  fecha_ingreso date
+  es_aprobador char(1)
+}
+
+Table usuario_portal {
+  codigo_usuario_portal int [pk, increment]
+  codigo_empleado int [ref: > empleado.codigo_empleado]
+  codigo_tercero int [ref: > terceros.codigo_tercero]
+  usuario varchar(50)
+  clave varchar(100)
+  tipo_usuario int [ref: > tipo.codigo_tipo]
+  estado int [ref: > tipo.codigo_tipo]
+}
+
+Table articulo {
+  codigo_articulo int [pk, increment]
+  nombre varchar(100)
+  tipo_articulo int [ref: > tipo.codigo_tipo]
+  unidad_medida varchar(20)
+  precio_referencia decimal(12,2)
+}
+
+Table inventario {
+  codigo_inventario int [pk, increment]
+  codigo_localidad int [ref: > localidad.codigo_localidad]
+  codigo_articulo int [ref: > articulo.codigo_articulo]
+  cantidad_actual decimal(12,2)
+  cantidad_reservada decimal(12,2)
+}
+
+Table activo_fijo {
+  codigo_activo_fijo int [pk, increment]
+  codigo_empresa int [ref: > empresa.codigo_empresa]
+  codigo_localidad int [ref: > localidad.codigo_localidad]
+  descripcion varchar(200)
+  valor_compra decimal(12,2)
+  fecha_compra date
+  depreciacion decimal(12,2)
+}
+
+Table pedido {
+  codigo_pedido int [pk, increment]
+  codigo_cliente int [ref: > terceros.codigo_tercero]
+  fecha_pedido date
+  fecha_requerida date
+  estado int [ref: > tipo.codigo_tipo]
+  origen varchar(30)
+}
+
+Table detalle_pedido {
+  codigo_detalle_pedido int [pk, increment]
+  codigo_pedido int [ref: > pedido.codigo_pedido]
+  codigo_articulo int [ref: > articulo.codigo_articulo]
+  cantidad_solicitada decimal(12,2)
+  cantidad_despachada decimal(12,2)
+}
+
+Table aprobacion {
+  codigo_aprobacion int [pk, increment]
+  codigo_pedido int [ref: > pedido.codigo_pedido]
+  codigo_empleado int [ref: > empleado.codigo_empleado]
+  fecha date
+  resultado int [ref: > tipo.codigo_tipo]
+  comentarios varchar(200)
+}
+
+Table planilla {
+  codigo_planilla int [pk, increment]
+  codigo_empresa int [ref: > empresa.codigo_empresa]
+  codigo_empleado int [ref: > empleado.codigo_empleado]
+  salario_bruto decimal(12,2)
+  descuentos decimal(12,2)
+  salario_neto decimal(12,2)
+  fecha_pago date
+  periodo_semanal_quincenal_mensual varchar(20)
+}
+
+Table orden_produccion {
+  codigo_orden_produccion int [pk, increment]
+  codigo_producto_terminado int [ref: > articulo.codigo_articulo]
+  codigo_materia_prima int [ref: > articulo.codigo_articulo]
+  codigo_localidad int [ref: > localidad.codigo_localidad]
+  codigo_pedido int [ref: > pedido.codigo_pedido]
+  fecha_inicio date
+  fecha_estimada date
+  fecha_real date
+  estado int [ref: > tipo.codigo_tipo]
+}
+
+Table despacho {
+  codigo_despacho int [pk, increment]
+  codigo_pedido int [ref: > pedido.codigo_pedido]
+  codigo_localidad_origen int [ref: > localidad.codigo_localidad]
+  codigo_localidad_destino int [ref: > localidad.codigo_localidad]
+  fecha_envio date
+  fecha_estimada date
+  fecha_real date
+  estado int [ref: > tipo.codigo_tipo]
+}
+
+Table ruta {
+  codigo_ruta int [pk, increment]
+  codigo_localidad_origen int [ref: > localidad.codigo_localidad]
+  codigo_localidad_destino int [ref: > localidad.codigo_localidad]
+  tiempo_horas int
+  costo_transporte decimal(12,2)
+  tipo_transporte int [ref: > tipo.codigo_tipo]
+}
+
+Table movimiento {
+  codigo_movimiento int [pk, increment]
+  tipo_movimiento int [ref: > tipo.codigo_tipo]
+  codigo_articulo int [ref: > articulo.codigo_articulo]
+  codigo_localidad_origen int [ref: > localidad.codigo_localidad]
+  codigo_localidad_destino int [ref: > localidad.codigo_localidad]
+  codigo_pedido int [ref: > pedido.codigo_pedido]
+  codigo_planilla int [ref: > planilla.codigo_planilla]
+  fecha date
+  monto decimal(12,2)
+  cantidad decimal(12,2)
+}
