@@ -323,37 +323,51 @@ VALUES (2, 2, 300);  -- Bodega Central tiene 300 camisas
 -- 10. PEDIDO Y DETALLE 
  
 INSERT INTO pedido (codigo_cliente, fecha_pedido, fecha_requerida, estado, origen) 
-VALUES (2, SYSDATE, SYSDATE + 10, 'PENDIENTE', 'WEB'); 
+VALUES (2, SYSDATE, SYSDATE + 10, 7, 'WEB'); 
  
+--  Select codigo_pedido from pedido where codigo_cliente=2;
+--  select codigo_articulo from articulo where nombre='Camisa Hombre';
+--  SELECT descripcion1, campo FROM tipo;
+
 INSERT INTO detalle_pedido (codigo_pedido, codigo_articulo, cantidad_solicitada) 
-VALUES (1, 2, 50); -- Cliente pide 50 camisas 
- 
+VALUES (2, 2, 50); -- Cliente pide 50 camisas 
+
+
  
 -- 11. APROBACIÓN 
  
 INSERT INTO aprobacion (codigo_pedido, codigo_empleado, resultado, comentarios) 
-VALUES (1, 1, 19, 'Aprobado por disponibilidad'); 
+VALUES (2, 1, 19, 'Aprobado por disponibilidad'); 
  
  
 -- 12. DESPACHO 
  
 INSERT INTO despacho (codigo_pedido, codigo_localidad_origen, 
-codigo_localidad_destino, fecha_envio, estado_despacho) 
-VALUES (1, 2, 2, SYSDATE, 17); -- pendiente de envío 
+codigo_localidad_destino, fecha_envio, estado) 
+VALUES (2, 2, 2, SYSDATE, 8); -- pendiente de envío 
  
  
 -- 13. MOVIMIENTOS 
  
 INSERT INTO movimiento (tipo_movimiento, codigo_articulo, codigo_localidad_origen, 
 codigo_localidad_destino, codigo_pedido, monto, cantidad) 
-VALUES (25, 2, 2, NULL, 1, 6000.00, 50); -- venta producto 
+VALUES (20, 2, 2, 2, 2, 6000.00, 50); -- venta producto 
  
+--  SELECT * FROM tipo; 
+-- SELECT * FROM articulo;
+-- SELECT * FROM localidad;
+-- SELECT * FROM pedido;
+-- SELECT * FROM movimiento;
+
  
 -- 14. PLANILLA 
  
-INSERT INTO planilla (codigo_empleado, salario_bruto, descuentos, salario_neto, 
+INSERT INTO planilla (codigo_empleado, codigo_empresa, salario_bruto, descuentos, salario_neto, 
 fecha_pago) 
-VALUES (1, 8000, 800, 7200, SYSDATE); 
+VALUES (1, 1, 8000, 800, 7200, SYSDATE); 
+ 
+--  SELECT * FROM EMPLEADO;
+-- SELECT * FROM EMPRESA;
  
  
 -- 15. ACTIVOS FIJOS 
