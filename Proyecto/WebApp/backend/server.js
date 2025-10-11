@@ -7,7 +7,9 @@ app.use(express.json());
 
 const pedidoRoutes = require('./routes/pedidoRoutes');
 const detallePedidoRoutes = require('./routes/detallePedidoRoutes');
+const paisRoutes = require('./routes/paisRoutes');
 
+app.use('/api/paises', paisRoutes);
 app.use('/api/pedidos', pedidoRoutes);
 app.use('/api/detalles', detallePedidoRoutes);
 

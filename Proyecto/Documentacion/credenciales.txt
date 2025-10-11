@@ -5,6 +5,9 @@ Username: PDBADMIN
 Password: abc123
 
 es para levantar la imagen de docker;
+primero reiniciar si da error
+sudo systemctl restart docker
+
 docker start oracle-free
 docker ps
 
