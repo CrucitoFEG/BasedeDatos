@@ -13,7 +13,7 @@ function PaisCrud() {
   }, []);
 
   const fetchPaises = async () => {
-    const res = await axios.get('http://localhost:3001/api/paises');
+    const res = await axios.get('https://musical-doodle-x5r9x5jwrxrq34jx-3001.app.github.dev/api/paises');
     setPaises(res.data);
   };
 
@@ -24,9 +24,9 @@ function PaisCrud() {
   const handleSubmit = async e => {
     e.preventDefault();
     if (editId) {
-      await axios.put(`http://localhost:3001/api/paises/${editId}`, form);
+      await axios.put(`https://musical-doodle-x5r9x5jwrxrq34jx-3001.app.github.dev/api/paises/${editId}`, form);
     } else {
-      await axios.post('http://localhost:3001/api/paises', form);
+      await axios.post('https://musical-doodle-x5r9x5jwrxrq34jx-3001.app.github.dev/api/paises', form);
     }
     setForm({ nombre: '', moneda: '' });
     setEditId(null);
@@ -39,7 +39,7 @@ function PaisCrud() {
   };
 
   const handleDelete = async id => {
-    await axios.delete(`http://localhost:3001/api/paises/${id}`);
+    await axios.delete(`https://musical-doodle-x5r9x5jwrxrq34jx-3001.app.github.dev/api/paises/${id}`);
     fetchPaises();
   };
 

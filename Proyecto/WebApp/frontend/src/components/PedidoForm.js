@@ -16,7 +16,7 @@ function PedidoForm() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    await axios.post('http://localhost:3001/api/pedidos', form);
+    await axios.post('https://musical-doodle-x5r9x5jwrxrq34jx-3001.app.github.dev/api/pedidos', form);
     alert('Pedido creado');
   };
 

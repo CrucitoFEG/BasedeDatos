@@ -5,7 +5,7 @@ function PedidoList() {
   const [pedidos, setPedidos] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3001/api/pedidos')
+    axios.get('https://musical-doodle-x5r9x5jwrxrq34jx-3001.app.github.dev/api/pedidos')
       .then(res => setPedidos(res.data))
       .catch(err => console.error(err));
   }, []);

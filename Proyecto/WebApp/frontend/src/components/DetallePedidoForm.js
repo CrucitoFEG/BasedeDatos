@@ -15,7 +15,7 @@ function DetallePedidoForm() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    await axios.post('http://localhost:3001/api/detalles', form);
+    await axios.post('https://musical-doodle-x5r9x5jwrxrq34jx-3001.app.github.dev/api/detalles', form);
     alert('Detalle creado');
   };
 
