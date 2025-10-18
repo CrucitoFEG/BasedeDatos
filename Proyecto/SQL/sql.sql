@@ -299,7 +299,29 @@ INSERT INTO usuario_portal (codigo_empleado, usuario, clave, tipo_usuario, estad
 VALUES (1, 'cperez', '1234', 23, 21);  -- tipo_usuario=Empleado, estado=Activo 
  
 INSERT INTO usuario_portal (codigo_tercero, usuario, clave, tipo_usuario, estado) 
-VALUES (2, 'tienda_estilo', 'abcd', 24, 21); -- cliente activo 
+VALUES (2, 'tienda_estilo', 'abcd', 24, 21); -- cliente activo
+
+-- Más usuarios del portal
+INSERT INTO usuario_portal (codigo_empleado, usuario, clave, tipo_usuario, estado) 
+VALUES (3, 'mgarcia', 'pass123', 23, 21);
+
+INSERT INTO usuario_portal (codigo_empleado, usuario, clave, tipo_usuario, estado) 
+VALUES (6, 'pmartinez', 'secure456', 23, 21);
+
+INSERT INTO usuario_portal (codigo_empleado, usuario, clave, tipo_usuario, estado) 
+VALUES (9, 'lflores', 'clave789', 23, 21);
+
+INSERT INTO usuario_portal (codigo_tercero, usuario, clave, tipo_usuario, estado) 
+VALUES (4, 'boutique_elegancia', 'pass001', 24, 21);
+
+INSERT INTO usuario_portal (codigo_tercero, usuario, clave, tipo_usuario, estado) 
+VALUES (5, 'fashion_usa', 'pass002', 24, 21);
+
+INSERT INTO usuario_portal (codigo_tercero, usuario, clave, tipo_usuario, estado) 
+VALUES (7, 'distribuidora_central', 'pass003', 24, 21);
+
+INSERT INTO usuario_portal (codigo_tercero, usuario, clave, tipo_usuario, estado) 
+VALUES (8, 'moda_express', 'pass004', 24, 21); 
  
  
 -- 8. ARTÍCULOS 
@@ -382,6 +404,548 @@ VALUES (1, 1, 'Máquina de coser industrial', 25000, DATE '2022-05-01', 5000);
 INSERT INTO ruta (codigo_localidad_origen, codigo_localidad_destino, tiempo_horas, 
 costo_transporte, tipo_transporte) 
 VALUES (1, 2, 5, 1500, 5);  -- terrestre entre fábrica y bodega 
+
+
+-- ========================================================================
+-- DATOS ADICIONALES GENERADOS - EXPANSIÓN DE LA BASE DE DATOS
+-- ========================================================================
+
+-- MÁS TIPOS ADICIONALES (Estados de pedido y órdenes de producción)
+
+INSERT INTO tipo (campo, descripcion1) VALUES ('ESTADO_PEDIDO','Pendiente'); 
+INSERT INTO tipo (campo, descripcion1) VALUES ('ESTADO_PEDIDO','Aprobado'); 
+INSERT INTO tipo (campo, descripcion1) VALUES ('ESTADO_PEDIDO','En Proceso'); 
+INSERT INTO tipo (campo, descripcion1) VALUES ('ESTADO_PEDIDO','Enviado'); 
+INSERT INTO tipo (campo, descripcion1) VALUES ('ESTADO_PEDIDO','Entregado'); 
+INSERT INTO tipo (campo, descripcion1) VALUES ('ESTADO_PEDIDO','Cancelado');
+
+INSERT INTO tipo (campo, descripcion1) VALUES ('ESTADO_OP','Planificada'); 
+INSERT INTO tipo (campo, descripcion1) VALUES ('ESTADO_OP','En Proceso'); 
+INSERT INTO tipo (campo, descripcion1) VALUES ('ESTADO_OP','Completada'); 
+INSERT INTO tipo (campo, descripcion1) VALUES ('ESTADO_OP','Cancelada'); 
+
+
+-- MÁS TERCEROS (Clientes y Proveedores Adicionales)
+
+INSERT INTO terceros (codigo_pais, nombre, tipo_tercero, telefono, direccion, cuenta_bancaria) 
+VALUES (1, 'Boutique Elegancia', 1, '502-5555-4444', 'Zona 10, Guatemala', 'GT11111');
+
+INSERT INTO terceros (codigo_pais, nombre, tipo_tercero, telefono, direccion, cuenta_bancaria) 
+VALUES (3, 'Fashion World USA', 1, '1-555-5555', 'Miami, FL', 'US99999');
+
+INSERT INTO terceros (codigo_pais, nombre, tipo_tercero, telefono, direccion, cuenta_bancaria) 
+VALUES (2, 'Hilos y Telas MX', 1, '55-5555-7777', 'Guadalajara, México', 'MX77777');
+
+INSERT INTO terceros (codigo_pais, nombre, tipo_tercero, telefono, direccion, cuenta_bancaria) 
+VALUES (1, 'Distribuidora Central', 1, '502-5555-8888', 'Zona 12, Guatemala', 'GT88888');
+
+INSERT INTO terceros (codigo_pais, nombre, tipo_tercero, telefono, direccion, cuenta_bancaria) 
+VALUES (1, 'Moda Express', 1, '502-5555-9999', 'Antigua Guatemala', 'GT99999');
+
+INSERT INTO terceros (codigo_pais, nombre, tipo_tercero, telefono, direccion, cuenta_bancaria) 
+VALUES (2, 'Textiles Azteca', 1, '55-5555-6666', 'Monterrey, México', 'MX66666');
+
+INSERT INTO terceros (codigo_pais, nombre, tipo_tercero, telefono, direccion, cuenta_bancaria) 
+VALUES (1, 'Botones y Cierres SA', 1, '502-5555-3333', 'Villa Nueva, Guatemala', 'GT33333');
+
+
+-- MÁS EMPLEADOS
+
+INSERT INTO empleado (codigo_empresa, codigo_localidad, nombre, puesto, salario_base, fecha_ingreso, es_aprobador) 
+VALUES (1, 1, 'María García', 'Supervisora', 6000, DATE '2021-03-20', 'Y');
+
+INSERT INTO empleado (codigo_empresa, codigo_localidad, nombre, puesto, salario_base, fecha_ingreso) 
+VALUES (1, 1, 'Juan Ramírez', 'Operario', 3500, DATE '2023-02-10');
+
+INSERT INTO empleado (codigo_empresa, codigo_localidad, nombre, puesto, salario_base, fecha_ingreso) 
+VALUES (1, 2, 'Luis Mendoza', 'Bodeguero', 4000, DATE '2022-08-15');
+
+INSERT INTO empleado (codigo_empresa, codigo_localidad, nombre, puesto, salario_base, fecha_ingreso, es_aprobador) 
+VALUES (2, 3, 'Pedro Martínez', 'Gerente General', 10000, DATE '2020-01-05', 'Y');
+
+INSERT INTO empleado (codigo_empresa, codigo_localidad, nombre, puesto, salario_base, fecha_ingreso) 
+VALUES (2, 3, 'Sofia Hernández', 'Operaria', 4000, DATE '2023-05-01');
+
+INSERT INTO empleado (codigo_empresa, codigo_localidad, nombre, puesto, salario_base, fecha_ingreso) 
+VALUES (1, 1, 'Roberto Castillo', 'Técnico Mantenimiento', 4500, DATE '2022-11-20');
+
+INSERT INTO empleado (codigo_empresa, codigo_localidad, nombre, puesto, salario_base, fecha_ingreso, es_aprobador) 
+VALUES (1, 2, 'Laura Flores', 'Jefa Logística', 7000, DATE '2021-07-10', 'Y');
+
+INSERT INTO empleado (codigo_empresa, codigo_localidad, nombre, puesto, salario_base, fecha_ingreso) 
+VALUES (1, 2, 'Diego Torres', 'Auxiliar Bodega', 3200, DATE '2024-01-15');
+
+
+-- MÁS USUARIOS DEL PORTAL
+
+INSERT INTO usuario_portal (codigo_empleado, usuario, clave, tipo_usuario, estado) 
+VALUES (3, 'mgarcia', 'pass123', 23, 21);
+
+INSERT INTO usuario_portal (codigo_empleado, usuario, clave, tipo_usuario, estado) 
+VALUES (6, 'pmartinez', 'secure456', 23, 21);
+
+INSERT INTO usuario_portal (codigo_empleado, usuario, clave, tipo_usuario, estado) 
+VALUES (9, 'lflores', 'clave789', 23, 21);
+
+INSERT INTO usuario_portal (codigo_tercero, usuario, clave, tipo_usuario, estado) 
+VALUES (4, 'boutique_elegancia', 'pass001', 24, 21);
+
+INSERT INTO usuario_portal (codigo_tercero, usuario, clave, tipo_usuario, estado) 
+VALUES (5, 'fashion_usa', 'pass002', 24, 21);
+
+INSERT INTO usuario_portal (codigo_tercero, usuario, clave, tipo_usuario, estado) 
+VALUES (7, 'distribuidora_central', 'pass003', 24, 21);
+
+INSERT INTO usuario_portal (codigo_tercero, usuario, clave, tipo_usuario, estado) 
+VALUES (8, 'moda_express', 'pass004', 24, 21);
+
+
+-- MÁS ARTÍCULOS
+
+INSERT INTO articulo (nombre, tipo_articulo, unidad_medida, precio_referencia) 
+VALUES ('Tela poliéster', 13, 15, 35.00);
+
+INSERT INTO articulo (nombre, tipo_articulo, unidad_medida, precio_referencia) 
+VALUES ('Hilo blanco', 13, 15, 8.00);
+
+INSERT INTO articulo (nombre, tipo_articulo, unidad_medida, precio_referencia) 
+VALUES ('Botones', 13, 15, 2.50);
+
+INSERT INTO articulo (nombre, tipo_articulo, unidad_medida, precio_referencia) 
+VALUES ('Cierres', 13, 15, 3.00);
+
+INSERT INTO articulo (nombre, tipo_articulo, unidad_medida, precio_referencia) 
+VALUES ('Camisa Mujer', 14, 15, 115.00);
+
+INSERT INTO articulo (nombre, tipo_articulo, unidad_medida, precio_referencia) 
+VALUES ('Pantalón Hombre', 14, 15, 180.00);
+
+INSERT INTO articulo (nombre, tipo_articulo, unidad_medida, precio_referencia) 
+VALUES ('Pantalón Mujer', 14, 15, 170.00);
+
+INSERT INTO articulo (nombre, tipo_articulo, unidad_medida, precio_referencia) 
+VALUES ('Blusa Casual', 14, 15, 95.00);
+
+INSERT INTO articulo (nombre, tipo_articulo, unidad_medida, precio_referencia) 
+VALUES ('Tela denim', 13, 15, 75.00);
+
+INSERT INTO articulo (nombre, tipo_articulo, unidad_medida, precio_referencia) 
+VALUES ('Etiquetas', 13, 15, 1.50);
+
+
+-- MÁS INVENTARIO -- hasta aqui deje de insertar por errores
+
+INSERT INTO inventario (codigo_localidad, codigo_articulo, cantidad_actual, cantidad_reservada) 
+VALUES (1, 3, 750, 50);
+
+INSERT INTO inventario (codigo_localidad, codigo_articulo, cantidad_actual, cantidad_reservada) 
+VALUES (1, 4, 1000, 100);
+
+INSERT INTO inventario (codigo_localidad, codigo_articulo, cantidad_actual, cantidad_reservada) 
+VALUES (1, 5, 5000, 200);
+
+INSERT INTO inventario (codigo_localidad, codigo_articulo, cantidad_actual, cantidad_reservada) 
+VALUES (1, 6, 3000, 150);
+
+INSERT INTO inventario (codigo_localidad, codigo_articulo, cantidad_actual, cantidad_reservada) 
+VALUES (2, 7, 250, 50);
+
+INSERT INTO inventario (codigo_localidad, codigo_articulo, cantidad_actual, cantidad_reservada) 
+VALUES (2, 8, 180, 30);
+
+INSERT INTO inventario (codigo_localidad, codigo_articulo, cantidad_actual, cantidad_reservada) 
+VALUES (2, 9, 200, 40);
+
+INSERT INTO inventario (codigo_localidad, codigo_articulo, cantidad_actual) 
+VALUES (2, 10, 150);
+
+INSERT INTO inventario (codigo_localidad, codigo_articulo, cantidad_actual, cantidad_reservada) 
+VALUES (1, 11, 600, 80);
+
+INSERT INTO inventario (codigo_localidad, codigo_articulo, cantidad_actual) 
+VALUES (1, 12, 8000);
+
+INSERT INTO inventario (codigo_localidad, codigo_articulo, cantidad_actual) 
+VALUES (3, 7, 180);
+
+INSERT INTO inventario (codigo_localidad, codigo_articulo, cantidad_actual) 
+VALUES (3, 8, 120);
+
+
+-- MÁS PEDIDOS Y DETALLES
+
+INSERT INTO pedido (codigo_cliente, fecha_pedido, fecha_requerida, estado, origen) 
+VALUES (4, SYSDATE - 5, SYSDATE + 5, 7, 'WEB');
+
+INSERT INTO detalle_pedido (codigo_pedido, codigo_articulo, cantidad_solicitada, cantidad_despachada) 
+VALUES (3, 7, 100, 100);
+
+INSERT INTO detalle_pedido (codigo_pedido, codigo_articulo, cantidad_solicitada, cantidad_despachada) 
+VALUES (3, 2, 75, 75);
+
+INSERT INTO pedido (codigo_cliente, fecha_pedido, fecha_requerida, estado, origen) 
+VALUES (5, SYSDATE - 3, SYSDATE + 7, 8, 'WEB');
+
+INSERT INTO detalle_pedido (codigo_pedido, codigo_articulo, cantidad_solicitada, cantidad_despachada) 
+VALUES (4, 8, 50, 30);
+
+INSERT INTO detalle_pedido (codigo_pedido, codigo_articulo, cantidad_solicitada, cantidad_despachada) 
+VALUES (4, 9, 60, 40);
+
+INSERT INTO pedido (codigo_cliente, fecha_pedido, fecha_requerida, estado, origen) 
+VALUES (7, SYSDATE - 10, SYSDATE - 2, 9, 'PHONE');
+
+INSERT INTO detalle_pedido (codigo_pedido, codigo_articulo, cantidad_solicitada, cantidad_despachada) 
+VALUES (5, 2, 200, 200);
+
+INSERT INTO detalle_pedido (codigo_pedido, codigo_articulo, cantidad_solicitada, cantidad_despachada) 
+VALUES (5, 7, 150, 150);
+
+INSERT INTO detalle_pedido (codigo_pedido, codigo_articulo, cantidad_solicitada, cantidad_despachada) 
+VALUES (5, 10, 100, 100);
+
+INSERT INTO pedido (codigo_cliente, fecha_pedido, fecha_requerida, estado, origen) 
+VALUES (8, SYSDATE - 2, SYSDATE + 8, 7, 'WEB');
+
+INSERT INTO detalle_pedido (codigo_pedido, codigo_articulo, cantidad_solicitada) 
+VALUES (6, 8, 80);
+
+INSERT INTO detalle_pedido (codigo_pedido, codigo_articulo, cantidad_solicitada) 
+VALUES (6, 9, 90);
+
+INSERT INTO pedido (codigo_cliente, fecha_pedido, fecha_requerida, estado, origen) 
+VALUES (2, SYSDATE - 7, SYSDATE + 3, 8, 'WEB');
+
+INSERT INTO detalle_pedido (codigo_pedido, codigo_articulo, cantidad_solicitada, cantidad_despachada) 
+VALUES (7, 7, 120, 80);
+
+INSERT INTO pedido (codigo_cliente, fecha_pedido, fecha_requerida, estado, origen) 
+VALUES (4, SYSDATE - 15, SYSDATE - 5, 9, 'EMAIL');
+
+INSERT INTO detalle_pedido (codigo_pedido, codigo_articulo, cantidad_solicitada, cantidad_despachada) 
+VALUES (8, 2, 300, 300);
+
+INSERT INTO detalle_pedido (codigo_pedido, codigo_articulo, cantidad_solicitada, cantidad_despachada) 
+VALUES (8, 8, 150, 150);
+
+INSERT INTO pedido (codigo_cliente, fecha_pedido, fecha_requerida, estado, origen) 
+VALUES (5, SYSDATE, SYSDATE + 12, 7, 'WEB');
+
+INSERT INTO detalle_pedido (codigo_pedido, codigo_articulo, cantidad_solicitada) 
+VALUES (9, 10, 200);
+
+INSERT INTO detalle_pedido (codigo_pedido, codigo_articulo, cantidad_solicitada) 
+VALUES (9, 7, 180);
+
+
+-- MÁS APROBACIONES
+
+INSERT INTO aprobacion (codigo_pedido, codigo_empleado, fecha, resultado, comentarios) 
+VALUES (3, 1, SYSDATE - 5, 19, 'Aprobado - Stock disponible');
+
+INSERT INTO aprobacion (codigo_pedido, codigo_empleado, fecha, resultado, comentarios) 
+VALUES (4, 3, SYSDATE - 3, 19, 'Aprobado - Cliente prioritario');
+
+INSERT INTO aprobacion (codigo_pedido, codigo_empleado, fecha, resultado, comentarios) 
+VALUES (5, 1, SYSDATE - 10, 19, 'Aprobado - Pedido grande');
+
+INSERT INTO aprobacion (codigo_pedido, codigo_empleado, fecha, resultado, comentarios) 
+VALUES (6, 9, SYSDATE - 2, 19, 'Aprobado - Normal');
+
+INSERT INTO aprobacion (codigo_pedido, codigo_empleado, fecha, resultado, comentarios) 
+VALUES (7, 3, SYSDATE - 7, 19, 'Aprobado parcialmente');
+
+INSERT INTO aprobacion (codigo_pedido, codigo_empleado, fecha, resultado, comentarios) 
+VALUES (8, 6, SYSDATE - 15, 19, 'Aprobado - Urgente');
+
+INSERT INTO aprobacion (codigo_pedido, codigo_empleado, fecha, resultado, comentarios) 
+VALUES (9, 9, SYSDATE, 19, 'Aprobado - En proceso');
+
+
+-- MÁS DESPACHOS
+
+INSERT INTO despacho (codigo_pedido, codigo_localidad_origen, codigo_localidad_destino, 
+fecha_envio, fecha_estimada, fecha_real, estado) 
+VALUES (3, 2, 2, SYSDATE - 5, SYSDATE - 3, SYSDATE - 3, 9);
+
+INSERT INTO despacho (codigo_pedido, codigo_localidad_origen, codigo_localidad_destino, 
+fecha_envio, fecha_estimada, estado) 
+VALUES (4, 2, 2, SYSDATE - 3, SYSDATE + 2, 8);
+
+INSERT INTO despacho (codigo_pedido, codigo_localidad_origen, codigo_localidad_destino, 
+fecha_envio, fecha_estimada, fecha_real, estado) 
+VALUES (5, 2, 2, SYSDATE - 10, SYSDATE - 5, SYSDATE - 4, 9);
+
+INSERT INTO despacho (codigo_pedido, codigo_localidad_origen, codigo_localidad_destino, 
+fecha_envio, estado) 
+VALUES (6, 2, 2, SYSDATE - 2, 7);
+
+INSERT INTO despacho (codigo_pedido, codigo_localidad_origen, codigo_localidad_destino, 
+fecha_envio, fecha_estimada, estado) 
+VALUES (7, 2, 2, SYSDATE - 7, SYSDATE, 8);
+
+INSERT INTO despacho (codigo_pedido, codigo_localidad_origen, codigo_localidad_destino, 
+fecha_envio, fecha_estimada, fecha_real, estado) 
+VALUES (8, 2, 2, SYSDATE - 15, SYSDATE - 10, SYSDATE - 9, 9);
+
+INSERT INTO despacho (codigo_pedido, codigo_localidad_origen, codigo_localidad_destino, 
+fecha_envio, fecha_estimada, estado) 
+VALUES (9, 2, 2, SYSDATE, SYSDATE + 5, 7);
+
+
+-- MÁS MOVIMIENTOS
+
+-- Compras de materia prima
+INSERT INTO movimiento (tipo_movimiento, codigo_articulo, codigo_localidad_destino, fecha, monto, cantidad) 
+VALUES (19, 1, 1, SYSDATE - 30, 25000.00, 500);
+
+INSERT INTO movimiento (tipo_movimiento, codigo_articulo, codigo_localidad_destino, fecha, monto, cantidad) 
+VALUES (19, 3, 1, SYSDATE - 28, 26250.00, 750);
+
+INSERT INTO movimiento (tipo_movimiento, codigo_articulo, codigo_localidad_destino, fecha, monto, cantidad) 
+VALUES (19, 4, 1, SYSDATE - 25, 8000.00, 1000);
+
+INSERT INTO movimiento (tipo_movimiento, codigo_articulo, codigo_localidad_destino, fecha, monto, cantidad) 
+VALUES (19, 11, 1, SYSDATE - 20, 45000.00, 600);
+
+-- Ventas de productos terminados
+INSERT INTO movimiento (tipo_movimiento, codigo_articulo, codigo_localidad_origen, 
+codigo_localidad_destino, codigo_pedido, fecha, monto, cantidad) 
+VALUES (20, 7, 2, 2, 3, SYSDATE - 5, 11500.00, 100);
+
+INSERT INTO movimiento (tipo_movimiento, codigo_articulo, codigo_localidad_origen, 
+codigo_localidad_destino, codigo_pedido, fecha, monto, cantidad) 
+VALUES (20, 2, 2, 2, 3, SYSDATE - 5, 9000.00, 75);
+
+INSERT INTO movimiento (tipo_movimiento, codigo_articulo, codigo_localidad_origen, 
+codigo_localidad_destino, codigo_pedido, fecha, monto, cantidad) 
+VALUES (20, 8, 2, 2, 4, SYSDATE - 3, 5400.00, 30);
+
+INSERT INTO movimiento (tipo_movimiento, codigo_articulo, codigo_localidad_origen, 
+codigo_localidad_destino, codigo_pedido, fecha, monto, cantidad) 
+VALUES (20, 9, 2, 2, 4, SYSDATE - 3, 6800.00, 40);
+
+INSERT INTO movimiento (tipo_movimiento, codigo_articulo, codigo_localidad_origen, 
+codigo_localidad_destino, codigo_pedido, fecha, monto, cantidad) 
+VALUES (20, 2, 2, 2, 5, SYSDATE - 10, 24000.00, 200);
+
+INSERT INTO movimiento (tipo_movimiento, codigo_articulo, codigo_localidad_origen, 
+codigo_localidad_destino, codigo_pedido, fecha, monto, cantidad) 
+VALUES (20, 7, 2, 2, 5, SYSDATE - 10, 17250.00, 150);
+
+INSERT INTO movimiento (tipo_movimiento, codigo_articulo, codigo_localidad_origen, 
+codigo_localidad_destino, codigo_pedido, fecha, monto, cantidad) 
+VALUES (20, 10, 2, 2, 5, SYSDATE - 10, 9500.00, 100);
+
+INSERT INTO movimiento (tipo_movimiento, codigo_articulo, codigo_localidad_origen, 
+codigo_localidad_destino, codigo_pedido, fecha, monto, cantidad) 
+VALUES (20, 7, 2, 2, 7, SYSDATE - 7, 9200.00, 80);
+
+INSERT INTO movimiento (tipo_movimiento, codigo_articulo, codigo_localidad_origen, 
+codigo_localidad_destino, codigo_pedido, fecha, monto, cantidad) 
+VALUES (20, 2, 2, 2, 8, SYSDATE - 15, 36000.00, 300);
+
+INSERT INTO movimiento (tipo_movimiento, codigo_articulo, codigo_localidad_origen, 
+codigo_localidad_destino, codigo_pedido, fecha, monto, cantidad) 
+VALUES (20, 8, 2, 2, 8, SYSDATE - 15, 27000.00, 150);
+
+-- Transferencias entre localidades
+INSERT INTO movimiento (tipo_movimiento, codigo_articulo, codigo_localidad_origen, 
+codigo_localidad_destino, fecha, monto, cantidad) 
+VALUES (22, 2, 1, 2, SYSDATE - 12, 0, 300);
+
+INSERT INTO movimiento (tipo_movimiento, codigo_articulo, codigo_localidad_origen, 
+codigo_localidad_destino, fecha, monto, cantidad) 
+VALUES (22, 7, 1, 2, SYSDATE - 12, 0, 250);
+
+INSERT INTO movimiento (tipo_movimiento, codigo_articulo, codigo_localidad_origen, 
+codigo_localidad_destino, fecha, monto, cantidad) 
+VALUES (22, 8, 1, 2, SYSDATE - 10, 0, 180);
+
+
+-- MÁS PLANILLAS
+
+INSERT INTO planilla (codigo_empleado, codigo_empresa, salario_bruto, descuentos, salario_neto, 
+fecha_pago, periodo_semanal_quincenal_mensual) 
+VALUES (2, 1, 3500, 350, 3150, SYSDATE - 15, 'QUINCENAL');
+
+INSERT INTO planilla (codigo_empleado, codigo_empresa, salario_bruto, descuentos, salario_neto, 
+fecha_pago, periodo_semanal_quincenal_mensual) 
+VALUES (3, 1, 6000, 600, 5400, SYSDATE - 15, 'QUINCENAL');
+
+INSERT INTO planilla (codigo_empleado, codigo_empresa, salario_bruto, descuentos, salario_neto, 
+fecha_pago, periodo_semanal_quincenal_mensual) 
+VALUES (4, 1, 3500, 350, 3150, SYSDATE - 15, 'QUINCENAL');
+
+INSERT INTO planilla (codigo_empleado, codigo_empresa, salario_bruto, descuentos, salario_neto, 
+fecha_pago, periodo_semanal_quincenal_mensual) 
+VALUES (5, 1, 4000, 400, 3600, SYSDATE - 15, 'QUINCENAL');
+
+INSERT INTO planilla (codigo_empleado, codigo_empresa, salario_bruto, descuentos, salario_neto, 
+fecha_pago, periodo_semanal_quincenal_mensual) 
+VALUES (6, 2, 10000, 1000, 9000, SYSDATE - 30, 'MENSUAL');
+
+INSERT INTO planilla (codigo_empleado, codigo_empresa, salario_bruto, descuentos, salario_neto, 
+fecha_pago, periodo_semanal_quincenal_mensual) 
+VALUES (7, 2, 4000, 400, 3600, SYSDATE - 30, 'MENSUAL');
+
+INSERT INTO planilla (codigo_empleado, codigo_empresa, salario_bruto, descuentos, salario_neto, 
+fecha_pago, periodo_semanal_quincenal_mensual) 
+VALUES (8, 1, 4500, 450, 4050, SYSDATE - 15, 'QUINCENAL');
+
+INSERT INTO planilla (codigo_empleado, codigo_empresa, salario_bruto, descuentos, salario_neto, 
+fecha_pago, periodo_semanal_quincenal_mensual) 
+VALUES (9, 1, 7000, 700, 6300, SYSDATE - 30, 'MENSUAL');
+
+INSERT INTO planilla (codigo_empleado, codigo_empresa, salario_bruto, descuentos, salario_neto, 
+fecha_pago, periodo_semanal_quincenal_mensual) 
+VALUES (10, 1, 3200, 320, 2880, SYSDATE - 15, 'QUINCENAL');
+
+-- Pagos de meses anteriores
+INSERT INTO planilla (codigo_empleado, codigo_empresa, salario_bruto, descuentos, salario_neto, 
+fecha_pago, periodo_semanal_quincenal_mensual) 
+VALUES (1, 1, 8000, 800, 7200, SYSDATE - 30, 'MENSUAL');
+
+INSERT INTO planilla (codigo_empleado, codigo_empresa, salario_bruto, descuentos, salario_neto, 
+fecha_pago, periodo_semanal_quincenal_mensual) 
+VALUES (3, 1, 6000, 600, 5400, SYSDATE - 30, 'MENSUAL');
+
+INSERT INTO planilla (codigo_empleado, codigo_empresa, salario_bruto, descuentos, salario_neto, 
+fecha_pago, periodo_semanal_quincenal_mensual) 
+VALUES (9, 1, 7000, 700, 6300, SYSDATE - 60, 'MENSUAL');
+
+-- Movimientos de pago de nómina
+INSERT INTO movimiento (tipo_movimiento, codigo_articulo, codigo_planilla, fecha, monto) 
+VALUES (21, 1, 1, SYSDATE, -7200.00);
+
+INSERT INTO movimiento (tipo_movimiento, codigo_articulo, codigo_planilla, fecha, monto) 
+VALUES (21, 1, 2, SYSDATE - 15, -3150.00);
+
+INSERT INTO movimiento (tipo_movimiento, codigo_articulo, codigo_planilla, fecha, monto) 
+VALUES (21, 1, 3, SYSDATE - 15, -5400.00);
+
+INSERT INTO movimiento (tipo_movimiento, codigo_articulo, codigo_planilla, fecha, monto) 
+VALUES (21, 1, 6, SYSDATE - 30, -9000.00);
+
+INSERT INTO movimiento (tipo_movimiento, codigo_articulo, codigo_planilla, fecha, monto) 
+VALUES (21, 1, 9, SYSDATE - 30, -6300.00);
+
+
+-- MÁS ACTIVOS FIJOS
+
+INSERT INTO activo_fijo (codigo_empresa, codigo_localidad, descripcion, valor_compra, 
+fecha_compra, depreciacion) 
+VALUES (1, 1, 'Cortadora de tela automática', 35000, DATE '2021-08-15', 8750);
+
+INSERT INTO activo_fijo (codigo_empresa, codigo_localidad, descripcion, valor_compra, 
+fecha_compra, depreciacion) 
+VALUES (1, 1, 'Máquina overlock', 18000, DATE '2022-11-20', 3600);
+
+INSERT INTO activo_fijo (codigo_empresa, codigo_localidad, descripcion, valor_compra, 
+fecha_compra, depreciacion) 
+VALUES (1, 1, 'Mesa de corte industrial', 8000, DATE '2023-02-10', 1600);
+
+INSERT INTO activo_fijo (codigo_empresa, codigo_localidad, descripcion, valor_compra, 
+fecha_compra, depreciacion) 
+VALUES (1, 1, 'Plancha industrial', 12000, DATE '2022-09-05', 2400);
+
+INSERT INTO activo_fijo (codigo_empresa, codigo_localidad, descripcion, valor_compra, 
+fecha_compra, depreciacion) 
+VALUES (1, 2, 'Montacargas', 45000, DATE '2021-06-15', 11250);
+
+INSERT INTO activo_fijo (codigo_empresa, codigo_localidad, descripcion, valor_compra, 
+fecha_compra, depreciacion) 
+VALUES (1, 2, 'Estantería metálica industrial', 15000, DATE '2020-11-20', 4500);
+
+INSERT INTO activo_fijo (codigo_empresa, codigo_localidad, descripcion, valor_compra, 
+fecha_compra, depreciacion) 
+VALUES (1, 2, 'Sistema de inventario automatizado', 28000, DATE '2023-01-15', 5600);
+
+INSERT INTO activo_fijo (codigo_empresa, codigo_localidad, descripcion, valor_compra, 
+fecha_compra, depreciacion) 
+VALUES (2, 3, 'Máquina de coser industrial', 26000, DATE '2021-03-10', 6500);
+
+INSERT INTO activo_fijo (codigo_empresa, codigo_localidad, descripcion, valor_compra, 
+fecha_compra, depreciacion) 
+VALUES (2, 3, 'Cortadora láser', 55000, DATE '2020-07-22', 16500);
+
+INSERT INTO activo_fijo (codigo_empresa, codigo_localidad, descripcion, valor_compra, 
+fecha_compra, depreciacion) 
+VALUES (1, 1, 'Generador eléctrico', 32000, DATE '2021-04-18', 8000);
+
+INSERT INTO activo_fijo (codigo_empresa, codigo_localidad, descripcion, valor_compra, 
+fecha_compra, depreciacion) 
+VALUES (1, 1, 'Sistema de aire acondicionado', 22000, DATE '2022-03-25', 4400);
+
+INSERT INTO activo_fijo (codigo_empresa, codigo_localidad, descripcion, valor_compra, 
+fecha_compra, depreciacion) 
+VALUES (1, 2, 'Camión de reparto', 85000, DATE '2020-09-10', 25500);
+
+INSERT INTO activo_fijo (codigo_empresa, codigo_localidad, descripcion, valor_compra, 
+fecha_compra, depreciacion) 
+VALUES (1, 1, 'Computadoras de oficina (10 unidades)', 15000, DATE '2023-05-12', 3000);
+
+
+-- MÁS RUTAS
+
+INSERT INTO ruta (codigo_localidad_origen, codigo_localidad_destino, tiempo_horas, 
+costo_transporte, tipo_transporte) 
+VALUES (2, 1, 5, 1500, 5);
+
+INSERT INTO ruta (codigo_localidad_origen, codigo_localidad_destino, tiempo_horas, 
+costo_transporte, tipo_transporte) 
+VALUES (1, 3, 48, 8500, 5);
+
+INSERT INTO ruta (codigo_localidad_origen, codigo_localidad_destino, tiempo_horas, 
+costo_transporte, tipo_transporte) 
+VALUES (3, 1, 48, 8500, 5);
+
+INSERT INTO ruta (codigo_localidad_origen, codigo_localidad_destino, tiempo_horas, 
+costo_transporte, tipo_transporte) 
+VALUES (2, 3, 50, 9000, 5);
+
+INSERT INTO ruta (codigo_localidad_origen, codigo_localidad_destino, tiempo_horas, 
+costo_transporte, tipo_transporte) 
+VALUES (1, 3, 120, 15000, 6);
+
+
+-- ORDENES DE PRODUCCIÓN
+
+INSERT INTO orden_produccion (codigo_producto_terminado, codigo_materia_prima, 
+codigo_localidad, codigo_pedido, fecha_inicio, fecha_estimada, fecha_real, estado)
+VALUES (2, 1, 1, 2, SYSDATE - 5, SYSDATE + 2, NULL, 26);
+
+INSERT INTO orden_produccion (codigo_producto_terminado, codigo_materia_prima, 
+codigo_localidad, codigo_pedido, fecha_inicio, fecha_estimada, fecha_real, estado)
+VALUES (7, 1, 1, 3, SYSDATE - 10, SYSDATE - 5, SYSDATE - 5, 27);
+
+INSERT INTO orden_produccion (codigo_producto_terminado, codigo_materia_prima, 
+codigo_localidad, codigo_pedido, fecha_inicio, fecha_estimada, fecha_real, estado)
+VALUES (8, 11, 1, 4, SYSDATE - 8, SYSDATE - 3, SYSDATE - 3, 27);
+
+INSERT INTO orden_produccion (codigo_producto_terminado, codigo_materia_prima, 
+codigo_localidad, codigo_pedido, fecha_inicio, fecha_estimada, estado)
+VALUES (2, 1, 1, 6, SYSDATE - 2, SYSDATE + 3, 25);
+
+INSERT INTO orden_produccion (codigo_producto_terminado, codigo_materia_prima, 
+codigo_localidad, codigo_pedido, fecha_inicio, fecha_estimada, fecha_real, estado)
+VALUES (7, 1, 1, 5, SYSDATE - 15, SYSDATE - 10, SYSDATE - 10, 27);
+
+INSERT INTO orden_produccion (codigo_producto_terminado, codigo_materia_prima, 
+codigo_localidad, codigo_pedido, fecha_inicio, fecha_estimada, fecha_real, estado)
+VALUES (8, 11, 1, 8, SYSDATE - 20, SYSDATE - 15, SYSDATE - 15, 27);
+
+INSERT INTO orden_produccion (codigo_producto_terminado, codigo_materia_prima, 
+codigo_localidad, codigo_pedido, fecha_inicio, fecha_estimada, estado)
+VALUES (10, 3, 1, 9, SYSDATE - 1, SYSDATE + 5, 26);
+
+INSERT INTO orden_produccion (codigo_producto_terminado, codigo_materia_prima, 
+codigo_localidad, codigo_pedido, fecha_inicio, fecha_estimada, estado)
+VALUES (9, 11, 1, 6, SYSDATE, SYSDATE + 6, 25);
+
+-- ========================================================================
+-- FIN DE DATOS ADICIONALES
+-- ========================================================================
 
 --Vistas
 -- Vista de inventario valorizado

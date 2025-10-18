@@ -4,10 +4,10 @@ import './App.css';
 
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Navbar, Nav, Container } from 'react-bootstrap';
-import PedidoForm from './components/PedidoForm';
-import PedidoList from './components/PedidoList';
-import DetallePedidoForm from './components/DetallePedidoForm';
-import DetallePedidoList from './components/DetallePedidoList';
+// import PedidoForm from './components/PedidoForm';
+// import PedidoList from './components/PedidoList';
+// import DetallePedidoForm from './components/DetallePedidoForm';
+// import DetallePedidoList from './components/DetallePedidoList';
 import PaisCrud from './components/PaisCrud';
 import VistaPedidosPendientes from './components/VistaPedidosPendientes';
 import VistaFlujoEfectivo from './components/VistaFlujoEfectivo';
@@ -21,7 +21,7 @@ function App() {
     <Router>
       <Navbar bg="dark" variant="dark" expand="lg">
         <Container>
-          <Navbar.Brand href="/"><img src={logo} alt="Logo Confecciones" style={{ height: '32px' }} /> Sistema de Pedidos</Navbar.Brand>
+          <Navbar.Brand href="/"><img src={logo} alt="Logo Confecciones" style={{ height: '32px' }} /> Sistema de Pedidos </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
