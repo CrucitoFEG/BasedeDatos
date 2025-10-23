@@ -54,15 +54,20 @@ function PedidoDetalleModal({ show, onHide, pedidoId }) {
                 <tr><td colSpan={4} className="text-center">No hay artículos</td></tr>
               ) : (
                 detalles.map((d, i) => {
-                  const codigoArticulo = d[2] ?? d.CODIGO_ARTICULO;
-                  const articuloObj = articulos.find(a => String(a.CODIGO_ARTICULO || a.codigo_articulo) === String(codigoArticulo));
-                  const nombreArticulo = articuloObj ? (articuloObj.NOMBRE || articuloObj.nombre) : codigoArticulo;
+                  // support both array and object shapes for backward compatibility
+                  const id = d.CODIGO_DETALLE_PEDIDO ?? d[0];
+                  const pid = d.CODIGO_PEDIDO ?? d[1];
+                  const codigoArticulo = d.CODIGO_ARTICULO ?? d[2];
+                  const nombreArticulo = (d.NOMBRE_ARTICULO || d.nombre_articulo) ??
+                    (articulos.find(a => String(a.CODIGO_ARTICULO || a.codigo_articulo) === String(codigoArticulo))?.NOMBRE)
+                    ?? codigoArticulo;
+                  const solicitado = d.CANTIDAD_SOLICITADA ?? d[3];
                   return (
                     <tr key={i}>
-                      <td>{d[0] ?? d.CODIGO_DETALLE_PEDIDO}</td>
-                      <td>{d[1] ?? d.CODIGO_PEDIDO}</td>
+                      <td>{id}</td>
+                      <td>{pid}</td>
                       <td>{nombreArticulo}</td>
-                      <td>{d[3] ?? d.CANTIDAD_SOLICITADA}</td>
+                      <td>{solicitado}</td>
                     </tr>
                   );
                 })

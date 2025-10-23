@@ -1,4 +1,5 @@
 // backend/controllers/detallePedidoController.js
+const oracledb = require('oracledb');
 const { getConnection } = require('../db');
 
 exports.getAll = async (req, res) => {
@@ -6,14 +7,26 @@ exports.getAll = async (req, res) => {
   try {
     const conn = await getConnection();
     let result;
+    // Always return rows as objects and include article name via LEFT JOIN to simplify frontend
     if (codigo_pedido) {
+      const pid = Number(codigo_pedido);
       result = await conn.execute(
-        `SELECT codigo_detalle_pedido, codigo_pedido, codigo_articulo, cantidad_solicitada, cantidad_despachada FROM detalle_pedido WHERE codigo_pedido = :1 ORDER BY codigo_detalle_pedido`,
-        [codigo_pedido]
+        `SELECT dp.codigo_detalle_pedido, dp.codigo_pedido, dp.codigo_articulo, a.nombre AS nombre_articulo, dp.cantidad_solicitada, dp.cantidad_despachada
+         FROM detalle_pedido dp
+         LEFT JOIN articulo a ON dp.codigo_articulo = a.codigo_articulo
+         WHERE dp.codigo_pedido = :1
+         ORDER BY dp.codigo_detalle_pedido`,
+        [pid],
+        { outFormat: oracledb.OUT_FORMAT_OBJECT }
       );
     } else {
       result = await conn.execute(
-        `SELECT codigo_detalle_pedido, codigo_pedido, codigo_articulo, cantidad_solicitada, cantidad_despachada FROM detalle_pedido ORDER BY codigo_detalle_pedido`
+        `SELECT dp.codigo_detalle_pedido, dp.codigo_pedido, dp.codigo_articulo, a.nombre AS nombre_articulo, dp.cantidad_solicitada, dp.cantidad_despachada
+         FROM detalle_pedido dp
+         LEFT JOIN articulo a ON dp.codigo_articulo = a.codigo_articulo
+         ORDER BY dp.codigo_detalle_pedido`,
+        [],
+        { outFormat: oracledb.OUT_FORMAT_OBJECT }
       );
     }
     res.json(result.rows || []);

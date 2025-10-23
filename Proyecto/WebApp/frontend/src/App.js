@@ -16,6 +16,7 @@ import PedidoForm from './components/PedidoForm';
 import PedidoList from './components/PedidoList';
 import Inicio from './components/Inicio';
 import Login from './components/Login';
+import ArticuloList from './components/ArticuloList';
 import logo from './assets/logo.png';
 
 
@@ -97,6 +98,7 @@ function App() {
               {user?.isEmpleado && (
                 <>
                   <Nav.Link as={Link} to="/vista/pedidos">Pedidos Pendientes</Nav.Link>
+                  <Nav.Link as={Link} to="/articulos">Artículos</Nav.Link>
                   <Nav.Link as={Link} to="/vista/flujo">Flujo Efectivo</Nav.Link>
                   <Nav.Link as={Link} to="/vista/inventario">Inventario Valorizado</Nav.Link>
                 </>
@@ -166,6 +168,11 @@ function App() {
           <Route path="/vista/inventario" element={
             <ProtectedRoute>
               <VistaInventarioValorizado />
+            </ProtectedRoute>
+          } />
+          <Route path="/articulos" element={
+            <ProtectedRoute>
+              <ArticuloList />
             </ProtectedRoute>
           } />
           
