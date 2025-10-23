@@ -9,7 +9,9 @@ const pedidoRoutes = require('./routes/pedidoRoutes');
 const detallePedidoRoutes = require('./routes/detallePedidoRoutes');
 const paisRoutes = require('./routes/paisRoutes');
 const vistaRoutes = require('./routes/vistaRoutes');
+const authRoutes = require('./routes/authRoutes');
 
+app.use('/api/auth', authRoutes);
 app.use('/api/vistas', vistaRoutes);
 app.use('/api/paises', paisRoutes);
 app.use('/api/pedidos', pedidoRoutes);

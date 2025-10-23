@@ -1,9 +1,9 @@
 // frontend/src/App.js
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { Navbar, Nav, Container } from 'react-bootstrap';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
+import { Navbar, Nav, Container, Button, Dropdown } from 'react-bootstrap';
 // import PedidoForm from './components/PedidoForm';
 // import PedidoList from './components/PedidoList';
 // import DetallePedidoForm from './components/DetallePedidoForm';
@@ -13,15 +13,70 @@ import VistaPedidosPendientes from './components/VistaPedidosPendientes';
 import VistaFlujoEfectivo from './components/VistaFlujoEfectivo';
 import VistaInventarioValorizado from './components/VistaInventarioValorizado';
 import Inicio from './components/Inicio';
+import Login from './components/Login';
 import logo from './assets/logo.png';
 
 
 function App() {
+  const [user, setUser] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // Verificar si hay una sesión guardada al cargar la app
+  useEffect(() => {
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      try {
+        const userData = JSON.parse(savedUser);
+        setUser(userData);
+        setIsAuthenticated(true);
+      } catch (error) {
+        console.error('Error al cargar sesión:', error);
+        localStorage.removeItem('user');
+      }
+    }
+  }, []);
+
+  // Función para manejar el login
+  const handleLogin = (userData) => {
+    setUser(userData);
+    setIsAuthenticated(true);
+  };
+
+  // Función para manejar el logout
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    setUser(null);
+    setIsAuthenticated(false);
+  };
+
+  // Componente para proteger rutas
+  const ProtectedRoute = ({ children }) => {
+    if (!isAuthenticated) {
+      return <Navigate to="/login" replace />;
+    }
+    return children;
+  };
+
+  // Si no está autenticado, mostrar solo el login
+  if (!isAuthenticated) {
+    return (
+      <Router>
+        <Routes>
+          <Route path="/login" element={<Login onLogin={handleLogin} />} />
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
+      </Router>
+    );
+  }
+
+  // Si está autenticado, mostrar la aplicación completa
   return (
     <Router>
       <Navbar bg="dark" variant="dark" expand="lg">
         <Container>
-          <Navbar.Brand href="/"><img src={logo} alt="Logo Confecciones" style={{ height: '32px' }} /> Sistema de Pedidos </Navbar.Brand>
+          <Navbar.Brand as={Link} to="/">
+            <img src={logo} alt="Logo Confecciones" style={{ height: '32px' }} /> Sistema de Pedidos
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
@@ -36,6 +91,30 @@ function App() {
               <Nav.Link as={Link} to="/detalles">Detalles</Nav.Link>
               <Nav.Link as={Link} to="/nuevo-detalle">Nuevo Detalle</Nav.Link> */}
             </Nav>
+            
+            {/* Usuario y botón de logout */}
+            <Nav>
+              <Dropdown align="end">
+                <Dropdown.Toggle variant="outline-light" id="dropdown-user">
+                  <i className="bi bi-person-circle me-2"></i>
+                  {user?.usuario || 'Usuario'}
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <Dropdown.Item disabled>
+                    <small className="text-muted">
+                      <i className="bi bi-person me-2"></i>
+                      {user?.usuario}
+                    </small>
+                  </Dropdown.Item>
+                  <Dropdown.Divider />
+                  <Dropdown.Item onClick={handleLogout}>
+                    <i className="bi bi-box-arrow-right me-2"></i>
+                    Cerrar Sesión
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
@@ -43,15 +122,29 @@ function App() {
       <Container className="mt-4">
         <Routes>
           <Route path="/" element={<Inicio />} />
-          <Route path="/paises" element={<PaisCrud />} />
-          {/* <Route path="/pedidos" element={<PedidoList />} />
-          <Route path="/nuevo-pedido" element={<PedidoForm />} />
-          <Route path="/detalles" element={<DetallePedidoList />} />
-          <Route path="/nuevo-detalle" element={<DetallePedidoForm />} /> */}
-          <Route path="/vista/pedidos" element={<VistaPedidosPendientes />} />      
-          <Route path="/vista/flujo" element={<VistaFlujoEfectivo />} />      
-          <Route path="/vista/inventario" element={<VistaInventarioValorizado />} />      
-
+          <Route path="/paises" element={
+            <ProtectedRoute>
+              <PaisCrud />
+            </ProtectedRoute>
+          } />
+          <Route path="/vista/pedidos" element={
+            <ProtectedRoute>
+              <VistaPedidosPendientes />
+            </ProtectedRoute>
+          } />      
+          <Route path="/vista/flujo" element={
+            <ProtectedRoute>
+              <VistaFlujoEfectivo />
+            </ProtectedRoute>
+          } />      
+          <Route path="/vista/inventario" element={
+            <ProtectedRoute>
+              <VistaInventarioValorizado />
+            </ProtectedRoute>
+          } />
+          
+          {/* Redirigir cualquier ruta no encontrada al inicio */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Container>
     </Router>
