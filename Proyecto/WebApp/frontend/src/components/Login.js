@@ -47,14 +47,16 @@ function Login({ onLogin }) {
   };
 
   return (
-    <div className="bg-dark" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
+    <div className="login-wrapper">
       <Container>
         <div className="row justify-content-center">
-          <div className="col-md-6 col-lg-4">
-            <Card className="shadow-lg border-0">
-              <Card.Body className="p-5">
+          <div className="col-md-6 col-lg-4 fade-in">
+            <Card className="login-card border-0">
+              <Card.Body>
                 <div className="text-center mb-4">
-                  <img src={logo} alt="Logo" style={{ height: '120px' }} className="mb-3" />
+                  <div className="logo-animate d-inline-block mb-3">
+                    <img src={logo} alt="Logo" style={{ height: '120px' }} />
+                  </div>
                   <h3 className="fw-bold">Iniciar Sesión</h3>
                   <p className="text-muted">Sistema de Control Empresarial</p>
                 </div>
@@ -71,6 +73,7 @@ function Login({ onLogin }) {
                       onChange={(e) => setUsuario(e.target.value)}
                       required
                       autoFocus
+                      className="form-input"
                     />
                   </Form.Group>
 
@@ -82,13 +85,13 @@ function Login({ onLogin }) {
                       value={clave}
                       onChange={(e) => setClave(e.target.value)}
                       required
+                      className="form-input"
                     />
                   </Form.Group>
 
                   <Button
-                    variant="primary"
+                    className="w-100 btn-primary-custom"
                     type="submit"
-                    className="w-100"
                     disabled={loading}
                     size="lg"
                   >
@@ -97,7 +100,7 @@ function Login({ onLogin }) {
                 </Form>
 
                 <div className="text-center mt-4">
-                  <small className="text-muted">
+                  <small className="muted-2">
                     <i className="bi bi-shield-lock me-1"></i>
                     Confecciones Global S.A. © 2025
                   </small>
@@ -106,7 +109,7 @@ function Login({ onLogin }) {
             </Card>
             
             {/* Demo credentials info */}
-            <Card className="mt-3 border-0 bg-light">
+            <Card className="mt-3 border-0 bg-light shadow-sm">
               <Card.Body className="p-3">
                 <small className="text-muted">
                   <strong>Usuarios de prueba:</strong><br/>

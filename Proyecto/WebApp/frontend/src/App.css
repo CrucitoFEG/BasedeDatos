@@ -1,12 +1,67 @@
+:root{
+  --bg-1: linear-gradient(180deg,#f6f2ec 0%, #ffffff 100%);
+  --primary: #0b4f4b; /* verde-teal - profesional */
+  --accent: #e85a4f; /* coral cálido para acentos */
+  --muted: #6c757d;
+  --card-bg: #ffffff;
+  --soft: #faf7f3;
+  --dark: #1f2933;
+}
+
 body {
-  background-color: #f8f9fa;
-  font-family: 'Segoe UI', sans-serif;
+  background: var(--bg-1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--dark);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
 }
 
-h1 {
-  color: #343a40;
+h1, h2, h3, h4, h5 {
+  color: var(--dark);
 }
 
-.lead {
-  color: #6c757d;
+.lead { color: var(--muted); }
+
+/* Animaciones suaves */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
+
+@keyframes pulseSlow {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+.fade-in { animation: fadeInUp 400ms ease both; }
+.hero { background: linear-gradient(90deg, rgba(11,79,75,0.98), rgba(232,90,79,0.9)); color: #fff; }
+.hero .lead { color: rgba(255,255,255,0.9); }
+
+.logo-animate { animation: pulseSlow 6s ease-in-out infinite; display:inline-block; }
+
+.login-wrapper {
+  min-height: 100vh; display:flex; align-items:center; justify-content:center; background: linear-gradient(180deg,#f8f6f2, #ffffff);
+}
+
+.login-card { border-radius: 12px; overflow: hidden; box-shadow: 0 10px 25px rgba(15,23,42,0.08); }
+.login-card .card-body { padding: 2.25rem; }
+
+.form-input { transition: box-shadow .18s ease, transform .18s ease; border-radius:8px; }
+.form-input:focus { box-shadow: 0 6px 18px rgba(11,79,75,0.12); transform: translateY(-1px); }
+
+.btn-primary-custom {
+  background: linear-gradient(90deg, var(--primary), #0e6a67);
+  border: none; color: #fff; box-shadow: 0 6px 14px rgba(11,79,75,0.12);
+}
+.btn-primary-custom:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(11,79,75,0.14); }
+
+.hover-card { transition: transform .28s cubic-bezier(.2,.8,.2,1), box-shadow .28s; }
+
+.muted-2 { color: #8b9196; }
+
+/* Ajustes responsivos */
+@media (max-width: 576px){
+  .login-card .card-body { padding: 1.25rem; }
+}
+

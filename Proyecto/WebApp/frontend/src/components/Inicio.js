@@ -31,12 +31,14 @@ function Inicio() {
   return (
     <>
       {/* Hero Section */}
-      <div className="bg-dark text-white py-5">
+      <div className="hero text-white py-5">
         <Container className="text-center">
-          <img src={logo} alt="Logo" style={{ height: '180px' }} className="mb-4" />
+          <div className="logo-animate mb-4">
+            <img src={logo} alt="Logo" style={{ height: '160px' }} />
+          </div>
           <h1 className="fs-1 text-white">Confecciones Global S.A.</h1>
           <p className="lead fs-4 mb-2">Sistema de Control Empresarial Integrado</p>
-          <p className="fs-5 text-secundary">"Comprometidos con la calidad, conectados con el mundo"</p>
+          <p className="fs-5 muted-2">"Comprometidos con la calidad, conectados con el mundo"</p>
         </Container>
       </div>
 
@@ -82,10 +84,10 @@ function Inicio() {
       </Container>
 
       {/* About Section */}
-      <Container className="my-5">
+        <Container className="my-5">
         <Card className="shadow-sm border-0 mb-4">
           <Card.Body className="p-4">
-            <h2 className="text-center fw-secondary mb-4">Nuestra Empresa</h2>
+            <h2 className="text-center fw-secondary mb-4 fade-in">Nuestra Empresa</h2>
             <p className="lead text-center text-dark">
               Somos una empresa internacional líder en la confección de ropa de vestir al por mayor, con presencia en múltiples países. Fabricamos gran parte de nuestra materia prima y trabajamos con proveedores certificados para garantizar la más alta calidad.
             </p>
