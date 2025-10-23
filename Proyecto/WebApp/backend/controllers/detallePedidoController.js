@@ -2,10 +2,21 @@
 const { getConnection } = require('../db');
 
 exports.getAll = async (req, res) => {
+  const { codigo_pedido } = req.query;
   try {
     const conn = await getConnection();
-    const result = await conn.execute(`SELECT * FROM detalle_pedido`);
-    res.json(result.rows);
+    let result;
+    if (codigo_pedido) {
+      result = await conn.execute(
+        `SELECT codigo_detalle_pedido, codigo_pedido, codigo_articulo, cantidad_solicitada, cantidad_despachada FROM detalle_pedido WHERE codigo_pedido = :1 ORDER BY codigo_detalle_pedido`,
+        [codigo_pedido]
+      );
+    } else {
+      result = await conn.execute(
+        `SELECT codigo_detalle_pedido, codigo_pedido, codigo_articulo, cantidad_solicitada, cantidad_despachada FROM detalle_pedido ORDER BY codigo_detalle_pedido`
+      );
+    }
+    res.json(result.rows || []);
     await conn.close();
   } catch (err) {
     res.status(500).send(err.message);

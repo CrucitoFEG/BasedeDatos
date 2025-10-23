@@ -84,9 +84,13 @@ function App() {
             <Nav className="me-auto">
               <Nav.Link as={Link} to="/">Inicio</Nav.Link>
               <Nav.Link as={Link} to="/paises">Países</Nav.Link>
-              {user?.isCliente && (
+              {(user?.isCliente || user?.isEmpleado) && (
                 <>
                   <Nav.Link as={Link} to="/nuevo-pedido">Nuevo Pedido</Nav.Link>
+                </>
+              )}
+              {user?.isCliente && (
+                <>
                   <Nav.Link as={Link} to="/pedidos">Mis Pedidos</Nav.Link>
                 </>
               )}

@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Table, Container, Card, InputGroup, Form, Button, Spinner } from 'react-bootstrap';
+import PedidoDetalleModal from './PedidoDetalleModal';
 
 function VistaPedidosPendientes() {
   const [datos, setDatos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState('');
   const [filtered, setFiltered] = useState([]);
+  const [showDetalleModal, setShowDetalleModal] = useState(false);
+  const [selectedPedidoId, setSelectedPedidoId] = useState(null);
 
   const BASE = process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL.replace(/\/$/, '') : '';
   const endpoint = (path) => (BASE ? `${BASE}/api${path}` : `/api${path}`);
@@ -81,7 +84,7 @@ function VistaPedidosPendientes() {
               </thead>
               <tbody>
                 {filtered.length === 0 ? (
-                  <tr><td colSpan={5} className="text-center">No hay pedidos</td></tr>
+                  <tr><td colSpan={6} className="text-center">No hay pedidos</td></tr>
                 ) : (
                   filtered.map((d, i) => (
                     <tr key={i}>
@@ -98,6 +101,9 @@ function VistaPedidosPendientes() {
                           </div>
                         )}
                       </td>
+                      <td>
+                        <Button size="sm" variant="primary" onClick={() => { setSelectedPedidoId(d[0]); setShowDetalleModal(true); }}>Ver detalle</Button>
+                      </td>
                     </tr>
                   ))
                 )}
@@ -106,6 +112,7 @@ function VistaPedidosPendientes() {
           )}
         </Card.Body>
       </Card>
+      <PedidoDetalleModal show={showDetalleModal} onHide={() => setShowDetalleModal(false)} pedidoId={selectedPedidoId} />
     </Container>
   );
 }
