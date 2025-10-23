@@ -1,20 +1,45 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Table, Form, Button, Row, Col } from 'react-bootstrap';
+import { Table, Form, Button, Row, Col, Card, Container, InputGroup, Spinner } from 'react-bootstrap';
 
 function PaisCrud() {
   const [paises, setPaises] = useState([]);
   const [form, setForm] = useState({ nombre: '', moneda: '' });
   const [editId, setEditId] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [query, setQuery] = useState('');
+  const [filtered, setFiltered] = useState([]);
+
+  // base API from env (fallback to empty -> use relative paths)
+  const BASE = process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL.replace(/\/$/, '') : '';
+  const endpoint = (path) => (BASE ? `${BASE}/api${path}` : `/api${path}`);
 
   // Cargar países al iniciar
   useEffect(() => {
     fetchPaises();
   }, []);
 
+  useEffect(() => {
+    if (!query) return setFiltered(paises);
+    const q = query.toLowerCase();
+    setFiltered(paises.filter(p => (
+      String(p[0]).toLowerCase().includes(q) ||
+      String(p[1]).toLowerCase().includes(q) ||
+      String(p[2] || '').toLowerCase().includes(q)
+    )));
+  }, [query, paises]);
+
   const fetchPaises = async () => {
-    const res = await axios.get('https://musical-doodle-x5r9x5jwrxrq34jx-3001.app.github.dev/api/paises');
-    setPaises(res.data);
+    try {
+      setLoading(true);
+      const res = await axios.get(endpoint('/paises'));
+      setPaises(res.data || []);
+      setFiltered(res.data || []);
+    } catch (err) {
+      console.error('Error cargando países', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = e => {
@@ -23,14 +48,21 @@ function PaisCrud() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    if (editId) {
-      await axios.put(`https://musical-doodle-x5r9x5jwrxrq34jx-3001.app.github.dev/api/paises/${editId}`, form);
-    } else {
-      await axios.post('https://musical-doodle-x5r9x5jwrxrq34jx-3001.app.github.dev/api/paises', form);
+    try {
+      setLoading(true);
+      if (editId) {
+        await axios.put(endpoint(`/paises/${editId}`), form);
+      } else {
+        await axios.post(endpoint('/paises'), form);
+      }
+      setForm({ nombre: '', moneda: '' });
+      setEditId(null);
+      await fetchPaises();
+    } catch (err) {
+      console.error('Error guardando país', err);
+    } finally {
+      setLoading(false);
     }
-    setForm({ nombre: '', moneda: '' });
-    setEditId(null);
-    fetchPaises();
   };
 
   const handleEdit = pais => {
@@ -39,40 +71,71 @@ function PaisCrud() {
   };
 
   const handleDelete = async id => {
-    await axios.delete(`https://musical-doodle-x5r9x5jwrxrq34jx-3001.app.github.dev/api/paises/${id}`);
-    fetchPaises();
+    const ok = window.confirm('Eliminar país? Esta acción no se puede deshacer.');
+    if (!ok) return;
+    try {
+      setLoading(true);
+      await axios.delete(endpoint(`/paises/${id}`));
+      await fetchPaises();
+    } catch (err) {
+      console.error('Error eliminando país', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div>
-      <h2>Gestión de Países</h2>
-      <Form onSubmit={handleSubmit}>
-        <Row>
-          <Col><Form.Control name="nombre" placeholder="Nombre" value={form.nombre} onChange={handleChange} /></Col>
-          <Col><Form.Control name="moneda" placeholder="Moneda" value={form.moneda} onChange={handleChange} /></Col>
-          <Col><Button type="submit">{editId ? 'Actualizar' : 'Crear'}</Button></Col>
-        </Row>
-      </Form>
+    <Container>
+      <Card className="shadow-sm">
+        <Card.Body>
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <h5 className="mb-0">Gestión de Países</h5>
+            <InputGroup style={{ maxWidth: 420 }}>
+              <Form.Control placeholder="Buscar por id, nombre o moneda" value={query} onChange={e => setQuery(e.target.value)} />
+              <Button variant="outline-secondary" onClick={() => setQuery('')}>Limpiar</Button>
+            </InputGroup>
+          </div>
 
-      <Table striped bordered hover className="mt-4">
-        <thead>
-          <tr><th>ID</th><th>Nombre</th><th>Moneda</th><th>Acciones</th></tr>
-        </thead>
-        <tbody>
-          {paises.map((p, i) => (
-            <tr key={i}>
-              <td>{p[0]}</td>
-              <td>{p[1]}</td>
-              <td>{p[2]}</td>
-              <td>
-                <Button variant="warning" size="sm" onClick={() => handleEdit(p)}>Editar</Button>{' '}
-                <Button variant="danger" size="sm" onClick={() => handleDelete(p[0])}>Eliminar</Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-    </div>
+          <Form onSubmit={handleSubmit} className="mb-3">
+            <Row className="g-2">
+              <Col xs={5}><Form.Control name="nombre" placeholder="Nombre" value={form.nombre} onChange={handleChange} /></Col>
+              <Col xs={4}><Form.Control name="moneda" placeholder="Moneda" value={form.moneda} onChange={handleChange} /></Col>
+              <Col xs={3} className="d-flex">
+                <Button type="submit" className="me-2">{editId ? 'Actualizar' : 'Crear'}</Button>
+                {editId && <Button variant="secondary" onClick={() => { setEditId(null); setForm({ nombre: '', moneda: '' }); }}>Cancelar</Button>}
+              </Col>
+            </Row>
+          </Form>
+
+          {loading ? (
+            <div className="text-center py-4"><Spinner animation="border" /> Cargando...</div>
+          ) : (
+            <Table striped bordered hover responsive>
+              <thead>
+                <tr><th>ID</th><th>Nombre</th><th>Moneda</th><th>Acciones</th></tr>
+              </thead>
+              <tbody>
+                {filtered.length === 0 ? (
+                  <tr><td colSpan={4} className="text-center">No hay países</td></tr>
+                ) : (
+                  filtered.map((p, i) => (
+                    <tr key={i}>
+                      <td>{p[0]}</td>
+                      <td>{p[1]}</td>
+                      <td>{p[2]}</td>
+                      <td>
+                        <Button variant="warning" size="sm" onClick={() => handleEdit(p)}>Editar</Button>{' '}
+                        <Button variant="danger" size="sm" onClick={() => handleDelete(p[0])}>Eliminar</Button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </Table>
+          )}
+        </Card.Body>
+      </Card>
+    </Container>
   );
 }
 

@@ -23,11 +23,100 @@
 // }
 
 // export default Inicio;
-import React from 'react';
-import { Container, Row, Col, Card } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Container, Row, Col, Card, Modal, Table, Spinner, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo2.png';
 
 function Inicio() {
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
+
+  const [pedidos, setPedidos] = useState([]);
+  const [paises, setPaises] = useState([]);
+  const [pedidosPendientes, setPedidosPendientes] = useState([]);
+  const [inventario, setInventario] = useState([]);
+
+  const [loadingCounts, setLoadingCounts] = useState(true);
+
+  // Modal
+  const [showModal, setShowModal] = useState(false);
+  const [modalTitle, setModalTitle] = useState('');
+  const [modalRows, setModalRows] = useState([]);
+  const [modalCols, setModalCols] = useState([]);
+  const [modalLoading, setModalLoading] = useState(false);
+
+  useEffect(() => {
+    // Cargar datos resumidos al iniciar
+    const load = async () => {
+      try {
+        setLoadingCounts(true);
+        const [r1, r2, r3, r4] = await Promise.all([
+          fetch(`${API_URL}/api/pedidos`).then(r => r.json()),
+          fetch(`${API_URL}/api/paises`).then(r => r.json()),
+          fetch(`${API_URL}/api/vistas/pedidos-pendientes`).then(r => r.json()),
+          fetch(`${API_URL}/api/vistas/inventario-valorizado`).then(r => r.json())
+        ]);
+        setPedidos(r1 || []);
+        setPaises(r2 || []);
+        setPedidosPendientes(r3 || []);
+        setInventario(r4 || []);
+      } catch (err) {
+        console.error('Error cargando resúmenes:', err);
+      } finally {
+        setLoadingCounts(false);
+      }
+    };
+    load();
+  }, [API_URL]);
+
+  const navigate = useNavigate();
+
+  const openModal = async (type) => {
+    setShowModal(true);
+    setModalRows([]);
+    setModalCols([]);
+    setModalLoading(true);
+
+    try {
+      let data = [];
+      if (type === 'pedidos') {
+        data = await fetch(`${API_URL}/api/pedidos`).then(r => r.json());
+        setModalTitle('Pedidos (todos)');
+      } else if (type === 'paises') {
+        data = await fetch(`${API_URL}/api/paises`).then(r => r.json());
+        setModalTitle('Países / Sucursales');
+      } else if (type === 'pendientes') {
+        data = await fetch(`${API_URL}/api/vistas/pedidos-pendientes`).then(r => r.json());
+        setModalTitle('Pedidos Pendientes');
+      } else if (type === 'inventario') {
+        data = await fetch(`${API_URL}/api/vistas/inventario-valorizado`).then(r => r.json());
+        setModalTitle('Inventario Valorizado');
+      }
+
+      // Normalize rows: backend returns arrays of arrays (Oracle); convert to array of objects if possible
+      if (Array.isArray(data) && data.length > 0 && Array.isArray(data[0])) {
+        // We don't have column names from server; show as generic columns
+        const cols = data[0].map((_, i) => `Col ${i+1}`);
+        const rows = data.map(r => r.map((c,i) => ({ key: `c${i}`, value: c })));
+        setModalCols(cols);
+        setModalRows(rows);
+      } else if (Array.isArray(data)) {
+        // assume array of objects
+        const cols = data.length > 0 ? Object.keys(data[0]) : [];
+        setModalCols(cols);
+        setModalRows(data);
+      } else {
+        setModalCols([]);
+        setModalRows([]);
+      }
+    } catch (err) {
+      console.error('Error cargando detalle:', err);
+    } finally {
+      setModalLoading(false);
+    }
+  };
+
+  const closeModal = () => setShowModal(false);
   return (
     <>
       {/* Hero Section */}
@@ -46,37 +135,54 @@ function Inicio() {
       <Container className="mt-n5 mb-5" style={{ position: 'relative', zIndex: 10 }}>
         <Row className="g-3">
           <Col md={3} sm={6}>
-            <Card className="shadow-sm h-100 text-center border-0">
+            <Card className="shadow-sm h-100 text-center border-0 hover-card" style={{cursor:'pointer'}}>
+              <div onClick={() => navigate('/paises')} style={{position: 'absolute', inset: 0, zIndex: 1}} aria-hidden></div>
               <Card.Body>
-                <i className="bi bi-globe2 fs-1 text-primary mb-2"></i>
-                <p className="text-muted small mb-0">Operaciones Globales</p>
+                <i className="bi bi-geo-alt fs-1 text-primary mb-2"></i>
+                <p className="text-muted small mb-1">Sucursales / Países</p>
+                {loadingCounts ? <Spinner animation="border" size="sm" /> : <h4 className="fw-bold">{paises.length}</h4>}
+                <div className="mt-2">
+                  <Button variant="link" onClick={(e) => { e.stopPropagation(); openModal('paises'); }}>Ver detalle</Button>
+                </div>
               </Card.Body>
             </Card>
           </Col>
           <Col md={3} sm={6}>
-            <Card className="shadow-sm h-100 text-center border-0">
+            <Card className="shadow-sm h-100 text-center border-0 hover-card" style={{cursor:'pointer'}}>
+              <div onClick={() => navigate('/vista/inventario')} style={{position: 'absolute', inset: 0, zIndex: 1}} aria-hidden></div>
               <Card.Body>
                 <i className="bi bi-box-seam fs-1 text-info mb-2"></i>
-                <h3 className="fw-bold">Inventario</h3>
-                <p className="text-muted small mb-0">Control Total</p>
+                <p className="text-muted small mb-1">Inventario Valorizado</p>
+                {loadingCounts ? <Spinner animation="border" size="sm" /> : <h4 className="fw-bold">{inventario.length}</h4>}
+                <div className="mt-2">
+                  <Button variant="link" onClick={(e) => { e.stopPropagation(); openModal('inventario'); }}>Ver detalle</Button>
+                </div>
               </Card.Body>
             </Card>
           </Col>
           <Col md={3} sm={6}>
-            <Card className="shadow-sm h-100 text-center border-0">
+            <Card className="shadow-sm h-100 text-center border-0 hover-card" style={{cursor:'pointer'}}>
+              <div onClick={() => navigate('/vista/pedidos')} style={{position: 'absolute', inset: 0, zIndex: 1}} aria-hidden></div>
               <Card.Body>
-                <i className="bi bi-currency-dollar fs-1 text-dark mb-2"></i>
-                <h3 className="fw-bold">$20M</h3>
-                <p className="text-muted small mb-0">Inversión Estratégica</p>
+                <i className="bi bi-card-list fs-1 text-dark mb-2"></i>
+                <p className="text-muted small mb-1">Pedidos (totales)</p>
+                {loadingCounts ? <Spinner animation="border" size="sm" /> : <h4 className="fw-bold">{pedidos.length}</h4>}
+                <div className="mt-2">
+                  <Button variant="link" onClick={(e) => { e.stopPropagation(); openModal('pedidos'); }}>Ver detalle</Button>
+                </div>
               </Card.Body>
             </Card>
           </Col>
           <Col md={3} sm={6}>
-            <Card className="shadow-sm h-100 text-center border-0">
+            <Card className="shadow-sm h-100 text-center border-0 hover-card" style={{cursor:'pointer'}}>
+              <div onClick={() => navigate('/vista/pedidos')} style={{position: 'absolute', inset: 0, zIndex: 1}} aria-hidden></div>
               <Card.Body>
-                <i className="bi bi-graph-up-arrow fs-1 text-warning mb-2"></i>
-                <h3 className="fw-bold">IPO Ready</h3>
-                <p className="text-muted small mb-0">Bolsa de Valores</p>
+                <i className="bi bi-hourglass-split fs-1 text-warning mb-2"></i>
+                <p className="text-muted small mb-1">Pedidos Pendientes</p>
+                {loadingCounts ? <Spinner animation="border" size="sm" /> : <h4 className="fw-bold">{pedidosPendientes.length}</h4>}
+                <div className="mt-2">
+                  <Button variant="link" onClick={(e) => { e.stopPropagation(); openModal('pendientes'); }}>Ver detalle</Button>
+                </div>
               </Card.Body>
             </Card>
           </Col>

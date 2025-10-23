@@ -15,8 +15,10 @@ function Login({ onLogin }) {
     setLoading(true);
 
     try {
+      // Base URL configurable via env var REACT_APP_API_URL (ej: https://mi-codespace-3001.app.github.dev)
+      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
       // Llamada real a la API de autenticación
-      const response = await fetch('http://localhost:3001/api/auth/login', {
+      const response = await fetch(`${API_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

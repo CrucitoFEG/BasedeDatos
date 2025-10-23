@@ -12,6 +12,8 @@ import PaisCrud from './components/PaisCrud';
 import VistaPedidosPendientes from './components/VistaPedidosPendientes';
 import VistaFlujoEfectivo from './components/VistaFlujoEfectivo';
 import VistaInventarioValorizado from './components/VistaInventarioValorizado';
+import PedidoForm from './components/PedidoForm';
+import PedidoList from './components/PedidoList';
 import Inicio from './components/Inicio';
 import Login from './components/Login';
 import logo from './assets/logo.png';
@@ -82,9 +84,19 @@ function App() {
             <Nav className="me-auto">
               <Nav.Link as={Link} to="/">Inicio</Nav.Link>
               <Nav.Link as={Link} to="/paises">Países</Nav.Link>
-              <Nav.Link as={Link} to="/vista/pedidos">Pedidos Pendientes</Nav.Link>
-              <Nav.Link as={Link} to="/vista/flujo">Flujo Efectivo</Nav.Link>
-              <Nav.Link as={Link} to="/vista/inventario">Inventario Valorizado</Nav.Link>
+              {user?.isCliente && (
+                <>
+                  <Nav.Link as={Link} to="/nuevo-pedido">Nuevo Pedido</Nav.Link>
+                  <Nav.Link as={Link} to="/pedidos">Mis Pedidos</Nav.Link>
+                </>
+              )}
+              {user?.isEmpleado && (
+                <>
+                  <Nav.Link as={Link} to="/vista/pedidos">Pedidos Pendientes</Nav.Link>
+                  <Nav.Link as={Link} to="/vista/flujo">Flujo Efectivo</Nav.Link>
+                  <Nav.Link as={Link} to="/vista/inventario">Inventario Valorizado</Nav.Link>
+                </>
+              )}
 
               {/* <Nav.Link as={Link} to="/pedidos">Pedidos</Nav.Link>
               <Nav.Link as={Link} to="/nuevo-pedido">Nuevo Pedido</Nav.Link>
@@ -125,6 +137,16 @@ function App() {
           <Route path="/paises" element={
             <ProtectedRoute>
               <PaisCrud />
+            </ProtectedRoute>
+          } />
+          <Route path="/nuevo-pedido" element={
+            <ProtectedRoute>
+              <PedidoForm />
+            </ProtectedRoute>
+          } />
+          <Route path="/pedidos" element={
+            <ProtectedRoute>
+              <PedidoList />
             </ProtectedRoute>
           } />
           <Route path="/vista/pedidos" element={
