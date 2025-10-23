@@ -1,5 +1,6 @@
 // backend/controllers/pedidoController.js
 const { getConnection } = require('../db');
+const oracledb = require('oracledb');
 
 exports.getAll = async (req, res) => {
   try {
@@ -16,13 +17,22 @@ exports.create = async (req, res) => {
   const { codigo_cliente, fecha_pedido, fecha_requerida, estado, origen } = req.body;
   try {
     const conn = await getConnection();
-    await conn.execute(
+    // Use RETURNING to get the generated codigo_pedido
+    const result = await conn.execute(
       `INSERT INTO pedido (codigo_cliente, fecha_pedido, fecha_requerida, estado, origen)
-       VALUES (:1, :2, :3, :4, :5)`,
-      [codigo_cliente, fecha_pedido, fecha_requerida, estado, origen],
+       VALUES (:1, :2, :3, :4, :5) RETURNING codigo_pedido INTO :outId`,
+      {
+        1: codigo_cliente,
+        2: fecha_pedido,
+        3: fecha_requerida,
+        4: estado,
+        5: origen,
+        outId: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
+      },
       { autoCommit: true }
     );
-    res.send('Pedido creado');
+    const insertedId = result.outBinds && result.outBinds.outId ? result.outBinds.outId[0] : null;
+    res.json({ message: 'Pedido creado', codigo_pedido: insertedId });
     await conn.close();
   } catch (err) {
     res.status(500).send(err.message);

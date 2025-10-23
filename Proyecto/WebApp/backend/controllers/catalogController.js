@@ -1,9 +1,14 @@
 const { getConnection } = require('../db');
+const oracledb = require('oracledb');
 
 exports.getTerceros = async (req, res) => {
   try {
     const conn = await getConnection();
-    const result = await conn.execute(`SELECT codigo_tercero, nombre FROM terceros ORDER BY nombre`);
+    const result = await conn.execute(
+      `SELECT codigo_tercero, nombre FROM terceros ORDER BY nombre`,
+      [],
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
     res.json(result.rows || []);
     await conn.close();
   } catch (err) {
@@ -15,7 +20,11 @@ exports.getTerceros = async (req, res) => {
 exports.getLocalidades = async (req, res) => {
   try {
     const conn = await getConnection();
-    const result = await conn.execute(`SELECT codigo_localidad, nombre FROM localidad ORDER BY nombre`);
+    const result = await conn.execute(
+      `SELECT codigo_localidad, nombre FROM localidad ORDER BY nombre`,
+      [],
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
     res.json(result.rows || []);
     await conn.close();
   } catch (err) {
@@ -30,7 +39,8 @@ exports.getTiposByCampo = async (req, res) => {
     const conn = await getConnection();
     const result = await conn.execute(
       `SELECT codigo_tipo, descripcion1 FROM tipo WHERE campo = :1 ORDER BY descripcion1`,
-      [campo]
+      [campo],
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
     );
     res.json(result.rows || []);
     await conn.close();

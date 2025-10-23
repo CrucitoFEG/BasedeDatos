@@ -58,8 +58,9 @@ function PedidoForm({ onSaved }) {
     e.preventDefault();
     try {
       setLoading(true);
-      await axios.post(endpoint('/pedidos'), form);
-      if (onSaved) onSaved();
+      const resp = await axios.post(endpoint('/pedidos'), form);
+      const newId = resp?.data?.codigo_pedido || null;
+      if (onSaved) onSaved(newId);
       setForm({ codigo_cliente: '', fecha_pedido: '', fecha_requerida: '', estado: '', origen: '' });
       alert('Pedido creado');
     } catch (err) {
@@ -82,9 +83,11 @@ function PedidoForm({ onSaved }) {
                   <Form.Label>Cliente</Form.Label>
                   <Form.Select name="codigo_cliente" value={form.codigo_cliente} onChange={handleChange} disabled={(() => { try { const u=JSON.parse(localStorage.getItem('user')); return u?.isCliente } catch { return false } })()}>
                     <option value="">-- Seleccione cliente --</option>
-                    {clientes.map((c, i) => (
-                      <option key={i} value={c[0]}>{c[1]}</option>
-                    ))}
+                    {clientes.map((c, i) => {
+                      const value = (c && (c.codigo_tercero || c.CODIGO_TERCERO)) || (Array.isArray(c) ? c[0] : '') ;
+                      const label = (c && (c.nombre || c.NOMBRE)) || (Array.isArray(c) ? c[1] : '') ;
+                      return <option key={i} value={value}>{label}</option>;
+                    })}
                   </Form.Select>
                 </Form.Group>
               </Col>
@@ -109,9 +112,11 @@ function PedidoForm({ onSaved }) {
                   <Form.Label>Estado</Form.Label>
                   <Form.Select name="estado" value={form.estado} onChange={handleChange}>
                     <option value="">-- Seleccione estado --</option>
-                    {estados.map((t, i) => (
-                      <option key={i} value={t[0]}>{t[1]}</option>
-                    ))}
+                    {estados.map((t, i) => {
+                      const value = (t && (t.codigo_tipo || t.CODIGO_TIPO)) || (Array.isArray(t) ? t[0] : '');
+                      const label = (t && (t.descripcion1 || t.DESCRIPCION1)) || (Array.isArray(t) ? t[1] : '');
+                      return <option key={i} value={value}>{label}</option>;
+                    })}
                   </Form.Select>
                 </Form.Group>
               </Col>
@@ -120,9 +125,11 @@ function PedidoForm({ onSaved }) {
                   <Form.Label>Origen (localidad)</Form.Label>
                   <Form.Select name="origen" value={form.origen} onChange={handleChange}>
                     <option value="">-- Seleccione origen --</option>
-                    {localidades.map((l, i) => (
-                      <option key={i} value={l[0]}>{l[1]}</option>
-                    ))}
+                    {localidades.map((l, i) => {
+                      const value = (l && (l.codigo_localidad || l.CODIGO_LOCALIDAD)) || (Array.isArray(l) ? l[0] : '');
+                      const label = (l && (l.nombre || l.NOMBRE)) || (Array.isArray(l) ? l[1] : '');
+                      return <option key={i} value={value}>{label}</option>;
+                    })}
                   </Form.Select>
                 </Form.Group>
               </Col>
